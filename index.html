@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<!-- Adding Tabbed Pages -->
+
+<head>
+
+  <meta charset="utf-8" />
+  <title>Split - deathSafe_prototype</title>
+  <link rel="stylesheet" href="css/bootstrap.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <!--  <link rel="stylesheet" href="css/tabbedPages.css" />  -->
+  <meta content="deathSafe_prototype" name="description" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="Manny Brut!" name="author" />
+  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init("user_QrHETi0BP8i4Z2fsEHCF0");
+    })();
+  </script>
+
+<!-- Add css for tabbed pages -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+      * {box-sizing: border-box}
+
+      /* Set height of body and the document to 100% */
+      body, html {
+        height: 100%;
+        margin: 1;
+        font-family: Arial;
+      }
+
+      /* Style tab links */
+      .tablink {
+        background-color: #555;
+        color: white;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 20%;
+      }
+
+      .tablink:hover {
+        background-color: #777;
+      }
+
+      /* Style the tab content (and add height:100% for full page content) */
+      .tabcontent {
+        color: #fcf9f9;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+      }
+
+      #Step1 {background-color: red;}
+      #Step2 {background-color: green;}
+      #Step3 {background-color: blue;}
+      #Step4 {background-color: orange;}
+      #Step5 {background-color: rgb(195, 0, 255);}
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">      <!--title-->
+      <div class="col-sm-10">
+        <h1>deathSafe_prototype Split and Send</h1><p></p>
+      </div>
+    </div>
+
+<!-- add tabs-->
+<button class="tablink" onclick="openPage('Step1', this, 'red')" id="defaultOpen">1. Name</button>
+<button class="tablink" onclick="openPage('Step2', this, 'green')" >2. Wieghted?</button>
+<button class="tablink" onclick="openPage('Step3', this, 'blue')">3. Enter Your Secret</button>
+<button class="tablink" onclick="openPage('Step4', this, 'orange')">4. Add Email DL</button>
+<button class="tablink" onclick="openPage('Step5', this, 'purple')">5. Make</button>
+
+<div id="Step1" class="tabcontent">
+  <div class="row">        <!-- STEP: 1 -->
+      <div class="col-sm-10">          <!-- step 1 enter secret name -->
+      <div>
+        <h3>STEP: 1</h3>
+        <b>Enter the Secret Name:</b><p></p>
+        Give your secret a unique but memorable name.  <p></p>
+        This will be your reference for managing this secret.
+        <textarea class="secret_name form-control" rows="9" placeholder="Enter your secrets name here"></textarea>
+      </div>
+  </div>
+</div></div>
+
+<div id="Step2" class="tabcontent">
+  <div class="row">        <!-- STEP: 2 -->
+      <div class="col-sm-10">        <!-- STEP: 2 -->
+            <form name="weightedShard">
+              <h3>STEP: 2</h3>
+              <p>
+                Please select if you want weighted Shards or equal distribution:
+              </p>
+                <div>
+                  <input type="radio" id="contactChoice1" name="contact" value="weighted" />
+                  <label for="contactChoice1">Yes, please weight the shards.</label>
+                  <br>
+                  <input type="radio" id="contactChoice2" name="contact" value="equalDistro" />
+                  <label for="contactChoice2">No, please distribute equal Shards.</label>
+                </div> 
+              <div>
+                <p></p>
+                <button type="submit" class="button">Click to confirm your selection...</button>
+              </div>
+            </form>
+      <pre id="log"></pre>
+            <script>
+              var form = document.querySelector("form");
+              var log = document.querySelector("#log");
+              form.addEventListener(
+                "submit",
+                function (event) {
+                  var data = new FormData(form);
+                  var output = "";
+                  for (const entry of data) {
+                    output = output + entry[0] + "=" + entry[1] + "\r";
+                    weightedShard = entry[1];
+                  }
+                  // log.innerText = output;
+                  console.log(weightedShard);
+                  event.preventDefault();
+                },
+                false
+              );
+            </script>
+        <p class="error text-danger"></p>
+    </div>
+</div> </div>
+
+<div id="Step3" class="tabcontent">
+  <div class="row">        <!-- STEP: 2 -->
+    <div class="col-sm-10">      <!--STEP: 3-->
+      <h2>STEP: 3</h2>
+      <div>
+        Require <input class="required form-control" type="number" value="2" min="2" max="255"/>
+        parts from <input class="total form-control" type="number" value="5" min="2" max="255" />
+        to reconstruct this secret<p></p>
+      </div>
+      <textarea class="secret form-control" rows="10" placeholder="Enter your text secret here or use STEP: 3a to upload an image."></textarea>
+      
+      
+      <!--  PLace file upLoad func here -->
+        <div id='file-list-display'>
+          <h2>STEP: 3a</h2>
+              You can OPTIONALLY upload an image file here. <p></p>
+          <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" />
+          <div id="imgTest"></div>
+          <script type='text/javascript'>
+            function encodeImageFileAsURL() {
+                var filesSelected = document.getElementById("inputFileToLoad").files;
+              if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                  fileReader.onload = function(fileLoadedEvent) {
+                  var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                  var newImage = document.createElement('img');
+                  newImage.src = srcData;
+          
+                  document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                  encodedImage = (document.getElementById("imgTest").innerHTML);
+                  alert("Converted Base64 version is " + encodedImage);
+                  //DOM.secret.value = (encodedImage);
+                  $("textarea#secret form-control").val(encodedImage);
+                  console.log("Converted Base64 version is " + encodedImage);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+              }
+            }
+          </script>
+        </div>
+        <!--  PLace file upLoad func end -->  
+    </div>
+  </div></div>
+ 
+  <div id="Step4" class="tabcontent">
+    <font color="black">  
+    <div class="row">      <!--STEP: 4-->
+    <div class="col-sm-10">        <!--step 4-->
+      <h2>STEP: 4</h2>
+      <h3>Add email addresses</h3>
+      <p class="form-control-static">
+        Enter the email, one per line. The first email entered will be the
+        master shard delegate 'MSD'. The MSD will recieve shards equivilent
+        to the amount required to combine that is set in the 'Split'
+        section. In most cases this will be your own email address.
+      </p>
+      <textarea class="emails form-control" rows="10"></textarea>
+      <p></p>
+      HINT: Use your gmail email address and add '+1' after you username and befor the '@gmail.com'
+      '[userName]+1@gmail.com, [userName]+2@gmail.com, etc'<br/>
+      moose1882+1@gmail.com <br/>
+      moose1882+2@gmail.com <br/>
+      moose1882+3@gmail.com <br/>
+      moose1882+4@gmail.com <br/>
+      moose1882+5@gmail.com <br/>
+      
+      <h2>Result</h2>
+      <pre class="combined">Enter your email above first to see results.</pre>
+        <div><div class="col-sm-32">
+          <!--uasage style="display: none;"> -->
+          <!--empty row for later-->
+          <br />
+          <h2>Parts[shards]</h2>
+          <ol class="generated">
+            <li>Enter your secret above first to display shards.</li>
+          </ol>
+        </div>
+    </div>
+  </div>
+ 
+ </div></div>
+
+  <div id="Step5" class="tabcontent">
+        <!--STEP: 5-->
+            <div class="col-sm-10">        <!--step 5 -->
+              <h2>STEP: 5</h2>
+              <input id="clickMe" type="button" value="make the shardShed.." class="button" onclick="theShed();" />
+            </div>
+          <div class="col-sm-10">
+            <!--uasage style="display: none;"> -->
+            <!--empty row for later-->
+            <br />
+            <h2>Parts[shards]</h2>
+            <ol class="generated">
+              <li>Enter your secret above first to display shards.</li>
+            </ol>
+          </font> 
+          </div>
+  </div>  </div>
+
+  <script>
+    // add tabbed page function
+    function openPage(pageName,elmnt,color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+        elmnt.style.backgroundColor = color;
+      }
+      
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    
+  </script>
+
+  <!--call the SS scripts-->
+  <script src="js/secrets.js"></script>
+  <script src="js/selector.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/sendShard.js"></script>
+  <!--<script src="js/fileUpLoad.js"></script> -->
+</body>
+
+</html>

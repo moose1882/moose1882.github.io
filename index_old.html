@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Split - deathSafe_prototype</title>
+  <link rel="stylesheet" href="css/bootstrap.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <meta content="deathSafe_prototype" name="description" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="Manny Brut!" name="author" />
+  <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init("user_QrHETi0BP8i4Z2fsEHCF0");
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">      <!--title-->
+      <div class="col-sm-12">
+        <h1>deathSafe_prototype Split and Send</h1>
+      </div>
+    </div>
+    <div class="row">        <!-- STEP: 1 -->
+      <div class="col-sm-6">          <!-- step 1 enter secret name -->
+        <div>
+          <h2>STEP: 1</h2>
+          <b>Enter the Secret Name:</b>
+          <textarea class="secret_name form-control" rows="1" placeholder="Enter your secrets name here">
+my secret</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row">      <!-- STEP: 2 -->
+      <div class="col-sm-6">        <!-- STEP: 2 -->
+
+        <form name="weightedShard">
+          <h2>STEP: 2</h2>
+          <p>
+            Please select if you want weighted Shards or equal distribution:
+          </p>
+          <div>
+            <input type="radio" id="contactChoice1" name="contact" value="weighted" />
+            <label for="contactChoice1">Yes, please weight the shards.</label>
+            <br>
+            <input type="radio" id="contactChoice2" name="contact" value="equalDistro" />
+            <label for="contactChoice2">No, please distribute equal Shards.</label>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+        <pre id="log"></pre>
+        <script>
+          var form = document.querySelector("form");
+          var log = document.querySelector("#log");
+          form.addEventListener(
+            "submit",
+            function (event) {
+              var data = new FormData(form);
+              var output = "";
+              for (const entry of data) {
+                output = output + entry[0] + "=" + entry[1] + "\r";
+                weightedShard = entry[1];
+              }
+              // log.innerText = output;
+
+              console.log(weightedShard);
+              event.preventDefault();
+            },
+            false
+          );
+        </script>
+          <p class="error text-danger"></p>
+      </div>
+              <!--  PLace file upLoad func here -->
+              <div id='file-list-display'>
+                <h2>STEP: 2a</h2>
+                    You can upload an image file here. 
+                <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" />
+                <div id="imgTest"></div>
+                <script type='text/javascript'>
+                  function encodeImageFileAsURL() {
+                      var filesSelected = document.getElementById("inputFileToLoad").files;
+                    if (filesSelected.length > 0) {
+                      var fileToLoad = filesSelected[0];
+                      var fileReader = new FileReader();
+                
+                      fileReader.onload = function(fileLoadedEvent) {
+                        var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                
+                        var newImage = document.createElement('img');
+                        newImage.src = srcData;
+                
+                        document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                        encodedImage = (document.getElementById("imgTest").innerHTML);
+                        alert("Converted Base64 version is " + encodedImage);
+                        //DOM.secret.value = (encodedImage);
+                        $("textarea#secret form-control").val(encodedImage);
+                        console.log("Converted Base64 version is " + encodedImage);
+                      }
+                      fileReader.readAsDataURL(fileToLoad);
+                    }
+                  }
+                </script></div>
+          <!--  PLace file upLoad func end -->  
+    </div>
+
+    <div class="col-sm-6">      <!--STEP: 3-->
+      <h2>STEP: 3</h2>
+      <h2>Split</h2>
+      <div>
+        Require
+        <input class="required form-control" type="number" value="2" min="2" max="255" />
+        parts from
+        <input class="total form-control" type="number" value="5" min="2" max="255" />
+        to reconstruct the following secret
+      </div>
+
+
+      <textarea class="secret form-control" rows="10" placeholder="Enter your secret here"></textarea>
+      
+      <!--STEP: 5-->
+        <div class="col-sm-6">        <!--step 5 -->
+          <div>
+            <h2>STEP: 5</h2>
+            <input id="clickMe" type="button" value="make the shardShed.." onclick="theShed();" />
+          </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">      <!--STEP: 4-->
+      <div class="col-sm-6">        <!--step 4-->
+        <h2>STEP: 4</h2>
+        <h2>Add email addresses</h2>
+        <p class="form-control-static">
+          Enter the email, one per line. The first email entered will be the
+          master shard delegate 'MSD'. The MSD will recieve shards equivilent
+          to the amount required to combine that is set in the 'Split'
+          section. In most cases this will be your own email address.
+        </p>
+        <textarea class="emails form-control" rows="10"></textarea>
+
+        HINT: Use your gmail email address and add '+1' after you username and befor the '@gmail.com'
+        '[userName]+1@gmail.com, [userName]+2@gmail.com, etc'<br/>
+        moose1882+1@gmail.com <br/>
+        moose1882+2@gmail.com <br/>
+        moose1882+3@gmail.com <br/>
+        moose1882+4@gmail.com <br/>
+        moose1882+5@gmail.com <br/>
+        <h2>Result</h2>
+        <pre class="combined">Enter your email above.</pre>
+          <div class="col-sm-12">
+            <!--uasage style="display: none;"> -->
+            <!--empty row for later-->
+            <br />
+            <h2>Parts[shards]</h2>
+            <ol class="generated">
+              <li>Enter your secret above.</li>
+            </ol>
+          </div>
+      </div>
+    </div>
+    <div class="row">      <!--empty row for later-->
+      <div class="col-sm-12" style="display: none;">
+        <!--empty row for later-->
+      </div>
+    </div>
+  </div>
+  <!--call the SS scripts-->
+  <script src="js/secrets.js"></script>
+  <script src="js/selector.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/sendShard.js"></script>
+  <!--<script src="js/fileUpLoad.js"></script> -->
+</body>
+
+</html>
